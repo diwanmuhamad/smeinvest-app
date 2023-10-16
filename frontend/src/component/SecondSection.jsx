@@ -47,7 +47,7 @@ const SecondSection = () => (
 
       <Link
         to={{
-          pathname: `/${localStorage.getItem("token") ? "chat" : "login"}`,
+          pathname: `/${"smelist"}`,
         }}
         className="appearance-none sm:ml-0 mx-auto"
       >

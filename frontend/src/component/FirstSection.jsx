@@ -35,7 +35,7 @@ const FirstSection = () => {
         </div>
         <Link
           to={{
-            pathname: `/${localStorage.getItem("token") ? "chat" : "login"}`,
+            pathname: `/${"smelist"}`,
           }}
           className="mx-auto appearance-none"
         >

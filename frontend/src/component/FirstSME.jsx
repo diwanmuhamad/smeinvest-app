@@ -43,7 +43,7 @@ const FirstSME = () => {
         <div class="container my-12 mx-auto px-4 md:px-12">
           <div class="flex flex-wrap -mx-1 lg:-mx-4">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((el) => {
-              return <Card />;
+              return <Card el={el} />;
             })}
           </div>
         </div>
