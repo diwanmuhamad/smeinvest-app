@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-import { close, cblogo, menu } from "../assets";
+import { close, cblogo, menu, lumi, liven } from "../assets";
 import { navLinks } from "../const";
 import { Link, useNavigate } from "react-router-dom";
 import { FaSignOutAlt } from "react-icons/fa";
 import Button from "./Button";
 import Axios from "axios";
-import { createurl } from "../utils/createurl";
+import { createurl, createUrlAlby } from "../utils/createurl";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -30,9 +30,11 @@ const Navbar = () => {
 
   return (
     <nav className="w-full flex py-6 justify-between items-center navbar">
-      <div>
-        <img src={cblogo} alt="heon" className="w-[150px] h-[80px]" />
-        <p className="tracking-[5px] ml-4 text-gradient">Casablanca</p>
+      <div onClick={() => navigate("/")} className="hover:cursor-pointer">
+        <img src={lumi} alt="liven" className="w-[130px] h-[60px]" />
+        <p className="tracking-[8px] ml-[33px] text-gradient font-poppins mt-2 text-[20px]">
+          LUMI
+        </p>
       </div>
 
       <ul className="list-none sm:flex hidden justify-end items-center flex-1">
@@ -57,8 +59,8 @@ const Navbar = () => {
               {nav.title}
             </Link>
           ) : nav.title === "Login" ? (
-            <a href={createurl()}>
-              <Button text={"Login with ZBD"}></Button>
+            <a href={createUrlAlby()}>
+              <Button text={"Login with Alby"}></Button>
             </a>
           ) : (
             <li
@@ -70,7 +72,7 @@ const Navbar = () => {
               } ${index === navLinks.length - 1 ? "mr-0" : "mr-10"}`}
               onClick={() => setActive(nav.title)}
             >
-              <a href={`#${nav.id}`}>{nav.title}</a>
+              <a href={nav.title === "SME" ? "/smelist" : "/"}>{nav.title}</a>
             </li>
           );
         })}

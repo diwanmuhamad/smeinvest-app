@@ -26,7 +26,9 @@ import people03 from "./people03.png";
 import chain1 from "./chain1.png";
 import chain2 from "./chain2.png";
 import chain3 from "./chain3.png";
-import cblogo from './cblogo.png'
+import cblogo from "./cblogo.png";
+import liven from "./liven.png";
+import lumi from "./lumi.png";
 
 export {
   airbnb,
@@ -57,5 +59,7 @@ export {
   chain1,
   chain2,
   chain3,
-  cblogo
+  cblogo,
+  liven,
+  lumi,
 };

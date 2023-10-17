@@ -10,7 +10,7 @@ function CasaApp() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="/chat" element={<Chat />} />
-      <Route path="/auth/callback" element={<Home />} />
+      <Route path="/callback" element={<Home />} />
       <Route path="/" element={<Home />} />
     </Routes>
   );

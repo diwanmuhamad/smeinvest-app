@@ -36,13 +36,15 @@ const SecondSection = () => (
       className={layout.sectionInfo}
     >
       <h2 className={styles.heading2}>
-        <span className="text-gradient">Grow</span> and{" "}
-        <span className="text-gradient">Expand</span>
-        <br className="sm:block hidden" /> with Us
+        <span className="text-gradient">Empowering </span> SMEs,
+        <br className="sm:block hidden" />
+        One <span className="text-gradient">Bolt</span> at a Time
       </h2>
       <p className={`${styles.paragraph} sm:max-w-[470px] mt-5`}>
-        Empower your small or medium enterprise by start investing in them, and
-        start your journey of investing with us
+        Make small and medium-sized investments accessible, easy, and fast
+        through the use of the Lightning Network. It suggests that LUMI is the
+        solution that brightens and energizes micro-investments, making them
+        more dynamic and efficient.
       </p>
 
       <Link
