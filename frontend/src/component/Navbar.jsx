@@ -59,7 +59,10 @@ const Navbar = () => {
               {nav.title}
             </Link>
           ) : nav.title === "Login" ? (
-            <a href={createUrlAlby()}>
+            <a
+              href={createUrlAlby()}
+              hidden={localStorage.getItem("token") ? true : false}
+            >
               <Button text={"Login with Alby"}></Button>
             </a>
           ) : (
@@ -82,6 +85,8 @@ const Navbar = () => {
             onClick={() => {
               navigate("/");
               localStorage.removeItem("token");
+              localStorage.removeItem("refresh_token");
+              localStorage.removeItem("user");
             }}
           />
         ) : null}
@@ -102,14 +107,11 @@ const Navbar = () => {
         >
           <ul className="list-none flex justify-end items-start flex-1 flex-col">
             {navLinks.map((nav, index) => {
-              return nav.title === "Sign Up" ||
-                nav.title === "Login" ||
-                nav.title === "Chat" ? (
+              return nav.title === "Sign Up" || nav.title === "Chat" ? (
                 <Link
                   key={nav.id}
                   className={`${
-                    localStorage.getItem("token") &&
-                    (nav.title === "Sign Up" || nav.title === "Login")
+                    localStorage.getItem("token") && nav.title === "Sign Up"
                       ? "hidden"
                       : ""
                   } font-poppins font-medium cursor-pointer text-[16px] ${
@@ -130,9 +132,37 @@ const Navbar = () => {
                       ? "text-black font-bold"
                       : "text-black-gradient"
                   } ${index === navLinks.length - 1 ? "mb-0" : "mb-4"}`}
-                  onClick={() => setActive(nav.title)}
+                  onClick={(e) => {
+                    setActive(nav.title);
+                    if (
+                      localStorage.getItem("token") &&
+                      nav.title === "Login"
+                    ) {
+                      localStorage.removeItem("token");
+                      localStorage.removeItem("refresh_token");
+                      localStorage.removeItem("user");
+
+                      e.preventDefault();
+                    } else if (nav.title === "SME") {
+                      navigate("/smelist");
+                    } else {
+                      navigate("/");
+                    }
+                  }}
                 >
-                  <a href={`#${nav.id}`}>{nav.title}</a>
+                  {localStorage.getItem("token") && nav.title === "Login" ? (
+                    <a>Logout</a>
+                  ) : (
+                    <a
+                      href={
+                        !localStorage.getItem("token") && nav.title === "Login"
+                          ? createUrlAlby()
+                          : ""
+                      }
+                    >
+                      {nav.title}
+                    </a>
+                  )}
                 </li>
               );
             })}

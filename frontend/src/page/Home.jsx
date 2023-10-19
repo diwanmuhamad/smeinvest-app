@@ -1,5 +1,5 @@
 import styles from "../style";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Navbar,
   FirstSection,
@@ -12,6 +12,7 @@ import axios from "axios";
 
 const Home = () => {
   const location = window.location;
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     if (window.location.pathname.includes("callback")) {
@@ -35,25 +36,32 @@ const Home = () => {
         )
         .then((response) => {
           console.log(response);
+          localStorage.setItem("token", response.data.access_token);
+          localStorage.setItem("refresh_token", response.data.refresh_token);
+          setRefresh(true);
           if (response.status === 200) {
             axios
-              .get("https://api.getalby.com/user/value4value", {
+              .get("https://api.getalby.com/user/me", {
                 headers: {
                   Authorization: "Bearer " + response.data.access_token,
                 },
               })
-              .then((response) => console.log(response))
+              .then((response) => {
+                let data = JSON.stringify(response.data);
+                localStorage.setItem("user", data);
+              })
               .catch((err) => console.log(err));
           }
         })
         .catch((err) => console.log(err));
     }
   }, []);
+
   return (
     <div className="bg-primary w-full overflow-hidden">
       <div className={`${styles.paddingX} ${styles.flexCenter}`}>
         <div className={`${styles.boxWidth}`}>
-          <Navbar />
+          {(!location.pathname.includes("callback") || refresh) && <Navbar />}
         </div>
       </div>
 
