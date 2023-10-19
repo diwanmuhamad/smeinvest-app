@@ -36,9 +36,9 @@ const SecondSection = () => (
       className={layout.sectionInfo}
     >
       <h2 className={styles.heading2}>
-        <span className="text-gradient">Empowering </span> SMEs,
+        <span className="text-[#B67465]">Empowering </span> SMEs,
         <br className="sm:block hidden" />
-        One <span className="text-gradient">Bolt</span> at a Time
+        One <span className="text-[#B67465]">Bolt</span> at a Time
       </h2>
       <p className={`${styles.paragraph} sm:max-w-[470px] mt-5`}>
         Make small and medium-sized investments accessible, easy, and fast

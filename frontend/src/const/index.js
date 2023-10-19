@@ -70,7 +70,7 @@ export const features = [
     icon: star,
     title: "Comprehensive Data",
     content:
-      "Casablanca provides comprehensive insights on a wide range of SME-related topics",
+      "LUMI provides comprehensive insights on a wide range of SME-related topics",
   },
   {
     id: "feature-2",

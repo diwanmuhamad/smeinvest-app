@@ -7,32 +7,19 @@ import { FaSignOutAlt } from "react-icons/fa";
 import Button from "./Button";
 import Axios from "axios";
 import { createurl, createUrlAlby } from "../utils/createurl";
+import { FaBars } from "react-icons/fa6";
+import { HiX } from "react-icons/hi";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [active, setActive] = useState("Home");
   const [toggle, setToggle] = useState(false);
 
-  // const loginWithZBD = () => {
-  //   const url = createurl();
-  //   console.log(url);
-  //   Axios.get(url, {
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Access-Control-Allow-Origin": "*",
-  //       "Access-Control-Allow-Headers":
-  //         "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-  //     },
-  //   })
-  //     .then((response) => console.log("text", response))
-  //     .catch((err) => console.log(err));
-  // };
-
   return (
     <nav className="w-full flex py-6 justify-between items-center navbar">
       <div onClick={() => navigate("/")} className="hover:cursor-pointer">
         <img src={lumi} alt="liven" className="w-[130px] h-[60px]" />
-        <p className="tracking-[8px] ml-[33px] text-gradient font-poppins mt-2 text-[20px]">
+        <p className="tracking-[20px] ml-[13px] text-[#B67465] font-poppins mt-2 text-[20px]">
           LUMI
         </p>
       </div>
@@ -44,8 +31,8 @@ const Navbar = () => {
               key={nav.id}
               className={`font-poppins font-normal cursor-pointer text-[16px] ${
                 active === nav.title
-                  ? "text-black font-bold"
-                  : "text-black-gradient"
+                  ? "text-[#797472] font-bold"
+                  : "text-[#797472]"
               } ${index === navLinks.length - 1 ? "mr-0" : "mr-10"}`}
               onClick={() => setActive(nav.title)}
               to={{
@@ -70,8 +57,8 @@ const Navbar = () => {
               key={nav.id}
               className={`font-poppins font-normal cursor-pointer text-[16px] ${
                 active === nav.title
-                  ? "text-black font-bold"
-                  : "text-black-gradient"
+                  ? "text-[#797472] font-bold"
+                  : "text-[#797472]"
               } ${index === navLinks.length - 1 ? "mr-0" : "mr-10"}`}
               onClick={() => setActive(nav.title)}
             >
@@ -93,12 +80,23 @@ const Navbar = () => {
       </ul>
 
       <div className="sm:hidden flex flex-1 justify-end items-center">
-        <img
+        {/* <img
           src={toggle ? close : menu}
           alt="menu"
           className="w-[28px] h-[28px] object-contain"
           onClick={() => setToggle(!toggle)}
-        />
+        /> */}
+        {!toggle ? (
+          <FaBars
+            onClick={() => setToggle(!toggle)}
+            className="text-[#797472] w-[28px] h-[28px]"
+          />
+        ) : (
+          <HiX
+            onClick={() => setToggle(!toggle)}
+            className="text-[#797472] w-[28px] h-[28px]"
+          />
+        )}
 
         <div
           className={`${
@@ -129,8 +127,8 @@ const Navbar = () => {
                   key={nav.id}
                   className={`font-poppins font-medium cursor-pointer text-[16px] ${
                     active === nav.title
-                      ? "text-black font-bold"
-                      : "text-black-gradient"
+                      ? "text-[#797472] font-bold"
+                      : "text-[#797472]"
                   } ${index === navLinks.length - 1 ? "mb-0" : "mb-4"}`}
                   onClick={(e) => {
                     setActive(nav.title);
