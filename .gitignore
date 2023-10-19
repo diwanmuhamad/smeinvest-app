@@ -1,0 +1,8 @@
+yarn.lock**
+package-lock.json**
+config.json
+
+node_modules**
+.env
+.DS_Store**
+yarn-error.log**
