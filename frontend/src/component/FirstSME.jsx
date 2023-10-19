@@ -14,8 +14,8 @@ const FirstSME = () => {
         viewport={{ once: true }}
         className={`flex-1 ${styles.flexStart} flex-col xl:px-0 sm:px-16 px-6`}
       >
-        <h1 className={styles.heading2}>Find Your SMEs</h1>
-        <div class="relative flex items-center w-[30%] min-w-[300px] h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
+        <h1 className={styles.heading}>Find Your SMEs</h1>
+        <div class="mx-auto relative flex items-center w-[30%] min-w-[300px] h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
           <div class="grid place-items-center h-full w-12 text-gray-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"

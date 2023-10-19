@@ -13,6 +13,7 @@ import {
   send,
   shield,
   star,
+  light,
 } from "../assets";
 
 export const scrollvariants = {
@@ -68,22 +69,23 @@ export const features = [
   {
     id: "feature-1",
     icon: star,
-    title: "Comprehensive Data",
+    title: "Diverse SME Investment Options",
     content:
-      "Casablanca provides comprehensive insights on a wide range of SME-related topics",
+      "The app provides a wide range of investment opportunities in Small and Medium-sized Enterprises (SMEs).",
   },
   {
     id: "feature-2",
-    icon: shield,
-    title: "Secure",
+    icon: light,
+    title: "Lightning Network Integration",
     content:
-      "Secure investing payment powered by lightning network with blockchain technology",
+      "The app seamlessly integrates with the Lightning Network, a second-layer scaling solution for Bitcoin, to facilitate instant and low-cost transactions.",
   },
   {
     id: "feature-3",
     icon: send,
-    title: "Quick and Effiecient",
-    content: "Say goodbye to time-consuming searches and endless browsing",
+    title: "Accessibility and User-Friendly Interface",
+    content:
+      "The app is designed with a user-friendly interface that makes it accessible to experienced and novice investors.",
   },
 ];
 

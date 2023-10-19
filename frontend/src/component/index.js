@@ -10,6 +10,7 @@ import MainChat from "./MainChat";
 import FirstSME from "./FirstSME";
 import Card from "./Card";
 import FirstDetailSME from "./FirstDetailSME";
+import Modal from "./Modal";
 
 export {
   Navbar,
@@ -24,4 +25,5 @@ export {
   FirstSME,
   Card,
   FirstDetailSME,
+  Modal,
 };

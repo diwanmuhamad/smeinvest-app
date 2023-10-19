@@ -7,32 +7,19 @@ import { FaSignOutAlt } from "react-icons/fa";
 import Button from "./Button";
 import Axios from "axios";
 import { createurl, createUrlAlby } from "../utils/createurl";
+import { FaBars } from "react-icons/fa6";
+import { HiX } from "react-icons/hi";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [active, setActive] = useState("Home");
   const [toggle, setToggle] = useState(false);
 
-  // const loginWithZBD = () => {
-  //   const url = createurl();
-  //   console.log(url);
-  //   Axios.get(url, {
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Access-Control-Allow-Origin": "*",
-  //       "Access-Control-Allow-Headers":
-  //         "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-  //     },
-  //   })
-  //     .then((response) => console.log("text", response))
-  //     .catch((err) => console.log(err));
-  // };
-
   return (
     <nav className="w-full flex py-6 justify-between items-center navbar">
       <div onClick={() => navigate("/")} className="hover:cursor-pointer">
         <img src={lumi} alt="liven" className="w-[130px] h-[60px]" />
-        <p className="tracking-[8px] ml-[33px] text-gradient font-poppins mt-2 text-[20px]">
+        <p className="tracking-[20px] ml-[13px] text-[#B67465] font-poppins mt-2 text-[20px]">
           LUMI
         </p>
       </div>
@@ -44,8 +31,8 @@ const Navbar = () => {
               key={nav.id}
               className={`font-poppins font-normal cursor-pointer text-[16px] ${
                 active === nav.title
-                  ? "text-black font-bold"
-                  : "text-black-gradient"
+                  ? "text-[#797472] font-bold"
+                  : "text-[#797472]"
               } ${index === navLinks.length - 1 ? "mr-0" : "mr-10"}`}
               onClick={() => setActive(nav.title)}
               to={{
@@ -59,7 +46,10 @@ const Navbar = () => {
               {nav.title}
             </Link>
           ) : nav.title === "Login" ? (
-            <a href={createUrlAlby()}>
+            <a
+              href={createUrlAlby()}
+              hidden={localStorage.getItem("token") ? true : false}
+            >
               <Button text={"Login with Alby"}></Button>
             </a>
           ) : (
@@ -67,8 +57,8 @@ const Navbar = () => {
               key={nav.id}
               className={`font-poppins font-normal cursor-pointer text-[16px] ${
                 active === nav.title
-                  ? "text-black font-bold"
-                  : "text-black-gradient"
+                  ? "text-[#797472] font-bold"
+                  : "text-[#797472]"
               } ${index === navLinks.length - 1 ? "mr-0" : "mr-10"}`}
               onClick={() => setActive(nav.title)}
             >
@@ -82,18 +72,31 @@ const Navbar = () => {
             onClick={() => {
               navigate("/");
               localStorage.removeItem("token");
+              localStorage.removeItem("refresh_token");
+              localStorage.removeItem("user");
             }}
           />
         ) : null}
       </ul>
 
       <div className="sm:hidden flex flex-1 justify-end items-center">
-        <img
+        {/* <img
           src={toggle ? close : menu}
           alt="menu"
           className="w-[28px] h-[28px] object-contain"
           onClick={() => setToggle(!toggle)}
-        />
+        /> */}
+        {!toggle ? (
+          <FaBars
+            onClick={() => setToggle(!toggle)}
+            className="text-[#797472] w-[28px] h-[28px]"
+          />
+        ) : (
+          <HiX
+            onClick={() => setToggle(!toggle)}
+            className="text-[#797472] w-[28px] h-[28px]"
+          />
+        )}
 
         <div
           className={`${
@@ -102,14 +105,11 @@ const Navbar = () => {
         >
           <ul className="list-none flex justify-end items-start flex-1 flex-col">
             {navLinks.map((nav, index) => {
-              return nav.title === "Sign Up" ||
-                nav.title === "Login" ||
-                nav.title === "Chat" ? (
+              return nav.title === "Sign Up" || nav.title === "Chat" ? (
                 <Link
                   key={nav.id}
                   className={`${
-                    localStorage.getItem("token") &&
-                    (nav.title === "Sign Up" || nav.title === "Login")
+                    localStorage.getItem("token") && nav.title === "Sign Up"
                       ? "hidden"
                       : ""
                   } font-poppins font-medium cursor-pointer text-[16px] ${
@@ -127,12 +127,40 @@ const Navbar = () => {
                   key={nav.id}
                   className={`font-poppins font-medium cursor-pointer text-[16px] ${
                     active === nav.title
-                      ? "text-black font-bold"
-                      : "text-black-gradient"
+                      ? "text-[#797472] font-bold"
+                      : "text-[#797472]"
                   } ${index === navLinks.length - 1 ? "mb-0" : "mb-4"}`}
-                  onClick={() => setActive(nav.title)}
+                  onClick={(e) => {
+                    setActive(nav.title);
+                    if (
+                      localStorage.getItem("token") &&
+                      nav.title === "Login"
+                    ) {
+                      localStorage.removeItem("token");
+                      localStorage.removeItem("refresh_token");
+                      localStorage.removeItem("user");
+
+                      e.preventDefault();
+                    } else if (nav.title === "SME") {
+                      navigate("/smelist");
+                    } else {
+                      navigate("/");
+                    }
+                  }}
                 >
-                  <a href={`#${nav.id}`}>{nav.title}</a>
+                  {localStorage.getItem("token") && nav.title === "Login" ? (
+                    <a>Logout</a>
+                  ) : (
+                    <a
+                      href={
+                        !localStorage.getItem("token") && nav.title === "Login"
+                          ? createUrlAlby()
+                          : ""
+                      }
+                    >
+                      {nav.title}
+                    </a>
+                  )}
                 </li>
               );
             })}

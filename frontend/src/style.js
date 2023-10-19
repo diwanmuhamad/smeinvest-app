@@ -1,10 +1,11 @@
 const styles = {
   boxWidth: "xl:max-w-[1280px] w-full",
-
+  heading:
+    "font-poppins font-semibold xs:text-[48px] text-[30px] sm:mt-0 mt-20 text-center text-[#797472] xs:leading-[76.8px] leading-[66.8px] w-full",
   heading2:
-    "font-poppins font-semibold xs:text-[48px] text-[30px] sm:mt-0 mt-20 sm:text-left text-center text-black-gradient xs:leading-[76.8px] leading-[66.8px] w-full",
+    "font-poppins font-semibold xs:text-[48px] text-[30px] sm:mt-0 mt-20 sm:text-left text-center text-[#797472] xs:leading-[76.8px] leading-[66.8px] w-full",
   paragraph:
-    "font-poppins font-normal text-black-gradient text-[18px] leading-[30.8px] sm:text-left text-center",
+    "font-poppins font-normal text-[#FAFAF8] text-[18px] leading-[30.8px] sm:text-left text-center",
 
   flexCenter: "flex justify-center items-center",
   flexStart: "flex justify-center items-start",
