@@ -13,6 +13,7 @@ import {
   send,
   shield,
   star,
+  light,
 } from "../assets";
 
 export const scrollvariants = {
@@ -74,7 +75,7 @@ export const features = [
   },
   {
     id: "feature-2",
-    icon: shield,
+    icon: light,
     title: "Lightning Network Integration",
     content:
       "The app seamlessly integrates with the Lightning Network, a second-layer scaling solution for Bitcoin, to facilitate instant and low-cost transactions.",
@@ -84,7 +85,7 @@ export const features = [
     icon: send,
     title: "Accessibility and User-Friendly Interface",
     content:
-      "The app is designed with a user-friendly interface that makes it accessible to beginner investors.",
+      "The app is designed with a user-friendly interface that makes it accessible to experienced and novice investors.",
   },
 ];
 

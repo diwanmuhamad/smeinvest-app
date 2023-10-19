@@ -29,6 +29,7 @@ import chain3 from "./chain3.png";
 import cblogo from "./cblogo.png";
 import liven from "./liven.png";
 import lumi from "./lumi.png";
+import light from "./lightning.svg";
 
 export {
   airbnb,
@@ -62,4 +63,5 @@ export {
   cblogo,
   liven,
   lumi,
+  light,
 };
