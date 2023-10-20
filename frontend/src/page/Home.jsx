@@ -35,7 +35,6 @@ const Home = () => {
           }
         )
         .then((response) => {
-          console.log(response);
           localStorage.setItem("token", response.data.access_token);
           localStorage.setItem("refresh_token", response.data.refresh_token);
           setRefresh(true);
@@ -49,6 +48,16 @@ const Home = () => {
               .then((response) => {
                 let data = JSON.stringify(response.data);
                 localStorage.setItem("user", data);
+                window.history.replaceState &&
+                  window.history.replaceState(
+                    null,
+                    "",
+                    location.pathname +
+                      location.search
+                        .replace(/[\?&]code=[^&]+/, "")
+                        .replace(/^&/, "?")
+                  );
+                location.pathname = "/";
               })
               .catch((err) => console.log(err));
           }

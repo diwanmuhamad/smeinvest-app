@@ -31,5 +31,9 @@ export const createurl = () => {
 };
 
 export const createUrlAlby = () => {
-  return "https://getalby.com/oauth?client_id=5bB4Ht9HxO&response_type=code&redirect_uri=http://localhost:5173/callback/&scope=balance:read%20account:read%20payments:send";
+  return `https://getalby.com/oauth?client_id=${
+    import.meta.env.VITE_REACT_CLIENT_ID
+  }&response_type=code&redirect_uri=${
+    import.meta.env.VITE_REACT_DOMAIN
+  }/callback/&scope=balance:read%20account:read%20payments:send`;
 };
