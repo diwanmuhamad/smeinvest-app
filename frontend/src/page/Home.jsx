@@ -22,12 +22,12 @@ const Home = () => {
           {
             code: location.search.replace("?code=", ""),
             grant_type: "authorization_code",
-            redirect_uri: "http://localhost:5173/callback/",
+            redirect_uri: `${import.meta.env.REACT_VITE_DOMAIN}/callback/`,
           },
           {
             auth: {
-              username: "5bB4Ht9HxO",
-              password: "M4M0UwTg1Sy0xGM940Fu",
+              username: import.meta.env.REACT_VITE_CLIENT_ID,
+              password: import.meta.env.REACT_VITE_CLIENT_SECRET,
             },
             headers: {
               "Content-Type": "multipart/form-data",
