@@ -14,7 +14,7 @@
     "sequelize": "^6.33.0"
   },
   "scripts": {
-    "start": "pm2 start src/index.ts --name smes-be --watch",
+    "start": "npx ts-node index.ts",
     "dev": "tsnd --respawn src/index.ts",
     "prod": "pm2 start src/index.ts --name smes-be --watch"
   },
