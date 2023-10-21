@@ -62,7 +62,7 @@ const FirstDetailSME = () => {
         <img
           alt="Placeholder"
           className="mx-auto block h-auto max-h-[300px] w-full max-w-[800px] rounded "
-          src={id === "14" ? bali : padma}
+          src={sme && sme.photo}
         />
         <h2 className="mx-auto mt-6 text-gray-500 text-[30px]">
           Industry Type: {id === "14" ? "Otomotive" : "Food Stall"}

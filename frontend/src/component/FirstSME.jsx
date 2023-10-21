@@ -4,7 +4,6 @@ import styles from "../style";
 import { scrollvariants, slideIn } from "../const";
 import { Card } from "./index";
 import axios from "axios";
-import { padma, bali } from "../assets";
 
 const FirstSME = () => {
   const [listSME, setListSME] = useState([]);
@@ -13,7 +12,7 @@ const FirstSME = () => {
   const searchSME = (e) => {
     let originalSME = [...listSMECopy];
     originalSME = originalSME.filter((el) =>
-      el.smes_name.includes(e.target.value)
+      el.smes_name.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setListSME(originalSME);
   };
@@ -23,14 +22,8 @@ const FirstSME = () => {
       .get(`${import.meta.env.VITE_REACT_SERVER_BACKEND}/api/smes`)
       .then((res) => {
         if (res.status === 200) {
-          let smedata = [...res.data.data];
-
-          smedata[0].image = padma;
-          smedata[0].smes_name = "UD Padma Sari";
-          smedata[1].image = bali;
-          smedata[1].smes_name = "UD Bali Jaya";
-          setListSME(smedata);
-          setListSMECopy(smedata);
+          setListSME(res.data.data);
+          setListSMECopy(res.data.data);
         }
       })
       .catch((err) => console.log(err));
@@ -79,7 +72,7 @@ const FirstSME = () => {
                   key={el.smes_name}
                   id={el.smes_id}
                   name={el.smes_name}
-                  image={el.image}
+                  image={el.photo}
                 />
               );
             })}
