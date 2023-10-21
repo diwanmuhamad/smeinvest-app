@@ -14,6 +14,8 @@
     "sequelize": "^6.33.0"
   },
   "scripts": {
+    "build": "tsc --build",
+    "start": "node ./src/index.js",
     "dev": "tsnd --respawn src/index.ts",
     "prod": "pm2 start src/index.ts --name smes-be --watch"
   },
