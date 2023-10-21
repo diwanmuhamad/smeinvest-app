@@ -165,6 +165,8 @@ const getSMEInvestmentDetail = async (req: any, res: any) => {
         id: investment.id,
         current_investment: investment.current_investment,
         investment_target: investment.investment_target,
+        start_at: investment.start_at,
+        end_at: investment.end_at,
         investmentRelations: investment.InvestmentRelations || [],
       })),
       total_investors: totalInvestors,
