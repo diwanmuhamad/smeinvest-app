@@ -4,6 +4,7 @@ import styles from "../style";
 import { scrollvariants, slideIn } from "../const";
 import { Card } from "./index";
 import axios from "axios";
+import { padma, bali } from "../assets";
 
 const FirstSME = () => {
   const [listSME, setListSME] = useState([]);
@@ -22,8 +23,14 @@ const FirstSME = () => {
       .get(`${import.meta.env.VITE_REACT_SERVER_BACKEND}/api/smes`)
       .then((res) => {
         if (res.status === 200) {
-          setListSME(res.data.data);
-          setListSMECopy(res.data.data);
+          let smedata = [...res.data.data];
+
+          smedata[0].image = padma;
+          smedata[0].smes_name = "UD Padma Sari";
+          smedata[1].image = bali;
+          smedata[1].smes_name = "UD Bali Jaya";
+          setListSME(smedata);
+          setListSMECopy(smedata);
         }
       })
       .catch((err) => console.log(err));
@@ -68,7 +75,12 @@ const FirstSME = () => {
           <div class="flex flex-wrap -mx-1 lg:-mx-4">
             {listSME.map((el) => {
               return (
-                <Card key={el.smes_name} id={el.smes_id} name={el.smes_name} />
+                <Card
+                  key={el.smes_name}
+                  id={el.smes_id}
+                  name={el.smes_name}
+                  image={el.image}
+                />
               );
             })}
           </div>

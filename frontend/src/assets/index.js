@@ -30,6 +30,8 @@ import cblogo from "./cblogo.png";
 import liven from "./liven.png";
 import lumi from "./lumi.png";
 import light from "./lightning.svg";
+import padma from "./udpadma.jpg";
+import bali from "./udbali.png";
 
 export {
   airbnb,
@@ -64,4 +66,6 @@ export {
   liven,
   lumi,
   light,
+  padma,
+  bali,
 };

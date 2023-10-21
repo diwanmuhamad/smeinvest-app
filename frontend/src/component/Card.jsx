@@ -1,15 +1,11 @@
 import React from "react";
 
-const Card = ({ name, id }) => {
+const Card = ({ name, id, image }) => {
   return (
     <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
       <a href={`/detailsme/${id}`}>
         <article class="overflow-hidden rounded-lg shadow-lg bg-[#FFA07A]">
-          <img
-            alt="Placeholder"
-            class="block h-auto w-full"
-            src="https://picsum.photos/600/400/?random"
-          />
+          <img alt="Placeholder" class="block h-[300px] w-full" src={image} />
 
           <header class="flex items-center justify-between leading-tight p-2 md:p-4">
             <h1 class="text-lg">

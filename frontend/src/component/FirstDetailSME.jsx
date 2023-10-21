@@ -5,8 +5,11 @@ import { Button, Modal } from "./index";
 import { useParams } from "react-router-dom";
 import { scrollvariants, slideIn } from "../const";
 import axios from "axios";
+import { padma, bali } from "../assets";
+
 const FirstDetailSME = () => {
   const { id } = useParams();
+  console.log(id);
   const [progress, setProgress] = useState("0%");
   const [showModal, setShowModal] = useState(false);
   const [sme, setSME] = useState(null);
@@ -53,16 +56,18 @@ const FirstDetailSME = () => {
         viewport={{ once: true }}
         className={`flex-1 ${styles.flexStart} flex-col xl:px-0 sm:px-16 px-6`}
       >
-        <h1 className={styles.heading2}>{sme && sme.username}</h1>
+        <h1 className={styles.heading}>
+          {id === "14" ? "UD Bali Jaya" : "UD Padma Sari"}
+        </h1>
         <img
           alt="Placeholder"
-          class="block h-auto max-h-[300px] w-full rounded"
-          src="https://picsum.photos/600/400/?random"
+          className="mx-auto block h-auto max-h-[300px] w-full max-w-[800px] rounded "
+          src={id === "14" ? bali : padma}
         />
-        <h2 className="mt-6 text-gray-500 text-[30px]">
-          Industry Type: {sme && sme.industry_type}
+        <h2 className="mx-auto mt-6 text-gray-500 text-[30px]">
+          Industry Type: {id === "14" ? "Otomotive" : "Food Stall"}
         </h2>
-        <div className="sm:w-2/6 xs:w-3/4 w-full h-[200px] rounded shadow-md mt-8 p-4 font-poppins cursor-auto flex flex-col justify-between bg-[#1D1F33]">
+        <div className="mx-auto sm:w-2/6 xs:w-3/4 w-full h-[200px] rounded shadow-md mt-8 p-4 font-poppins cursor-auto flex flex-col justify-between bg-[#1D1F33]">
           <div className="text-[#797472]">
             <div className="flex justify-between">
               <h3>Investment</h3>
