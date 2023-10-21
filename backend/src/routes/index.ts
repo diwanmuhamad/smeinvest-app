@@ -10,7 +10,7 @@ import {
 
 const router = Router()
 
-router.use('/smes', smesRouter)
-router.use('/users', userRouter)
+router.use('/api/smes', smesRouter)
+router.use('/api/users', userRouter)
 
 export { router }
