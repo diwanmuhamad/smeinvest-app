@@ -15,7 +15,7 @@
   },
   "scripts": {
     "dev": "tsnd --respawn src/index.ts",
-    "start": "tsnd --respawn src/index.ts",
+    "start": "node index.js",
     "prod": "pm2 start src/index.ts --name smes-be --watch"
   },
   "devDependencies": {
