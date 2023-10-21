@@ -46,18 +46,34 @@ const Home = () => {
                 },
               })
               .then((response) => {
-                let data = JSON.stringify(response.data);
-                localStorage.setItem("user", data);
-                window.history.replaceState &&
-                  window.history.replaceState(
-                    null,
-                    "",
-                    location.pathname +
-                      location.search
-                        .replace(/[\?&]code=[^&]+/, "")
-                        .replace(/^&/, "?")
-                  );
-                location.pathname = "/";
+                if (response.status === 200) {
+                  let data = JSON.stringify(response.data);
+                  localStorage.setItem("user", data);
+
+                  axios
+                    .get(
+                      `${
+                        import.meta.env.VITE_REACT_SERVER_BACKEND
+                      }/api/users/check/${response.data.lightning_address}`
+                    )
+                    .then((res) => {
+                      if (res.status === 200) {
+                        window.history.replaceState &&
+                          window.history.replaceState(
+                            null,
+                            "",
+                            location.pathname +
+                              location.search
+                                .replace(/[\?&]code=[^&]+/, "")
+                                .replace(/^&/, "?")
+                          );
+                        window.history.replaceState &&
+                          window.history.replaceState(null, "", "/");
+                        // location.pathname = "/";
+                      }
+                    })
+                    .catch((err) => console.log(err));
+                }
               })
               .catch((err) => console.log(err));
           }

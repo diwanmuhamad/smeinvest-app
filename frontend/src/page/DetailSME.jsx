@@ -1,6 +1,8 @@
 import React from "react";
 import styles from "../style";
 import { Navbar, FirstDetailSME, Footer } from "../component";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DetailSME = () => {
   return (
@@ -22,6 +24,7 @@ const DetailSME = () => {
           <Footer />
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

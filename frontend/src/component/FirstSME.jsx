@@ -1,10 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import styles from "../style";
 import { scrollvariants, slideIn } from "../const";
 import { Card } from "./index";
+import axios from "axios";
 
 const FirstSME = () => {
+  const [listSME, setListSME] = useState([]);
+  const [listSMECopy, setListSMECopy] = useState([]);
+
+  const searchSME = (e) => {
+    let originalSME = [...listSMECopy];
+    originalSME = originalSME.filter((el) =>
+      el.smes_name.includes(e.target.value)
+    );
+    setListSME(originalSME);
+  };
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_REACT_SERVER_BACKEND}/api/smes`)
+      .then((res) => {
+        if (res.status === 200) {
+          setListSME(res.data.data);
+          setListSMECopy(res.data.data);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
   return (
     <section id="home" className={`flex sm:py-6 py-6 `}>
       <motion.div
@@ -34,6 +57,7 @@ const FirstSME = () => {
           </div>
 
           <input
+            onChange={(e) => searchSME(e)}
             class="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
             type="text"
             id="search"
@@ -42,8 +66,10 @@ const FirstSME = () => {
         </div>
         <div class="container my-12 mx-auto px-4 md:px-12">
           <div class="flex flex-wrap -mx-1 lg:-mx-4">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((el) => {
-              return <Card el={el} />;
+            {listSME.map((el) => {
+              return (
+                <Card key={el.smes_name} id={el.smes_id} name={el.smes_name} />
+              );
             })}
           </div>
         </div>
