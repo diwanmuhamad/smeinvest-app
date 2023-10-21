@@ -4,12 +4,12 @@ const smesRouter = Router();
 import {
     getSMElist,
     getSMEDetail,
-    getSMEInvestment
+    getSMEInvestmentDetail
 } from '../../controllers/smes'
 
 smesRouter.get("/", getSMElist);
 smesRouter.get("/:id", getSMEDetail);
-smesRouter.get("/investment/:id", getSMEInvestment);
+smesRouter.get("/investment/:id", getSMEInvestmentDetail);
 smesRouter.post("/invest", async () => {});
 
 export { smesRouter };

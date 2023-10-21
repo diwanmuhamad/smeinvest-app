@@ -15,7 +15,7 @@ function generateRandomUsername(length: number) {
 
 const checkUser = async (req: any, res: any) => {
   const wallet = req?.params?.wallet;
-  if (!wallet) {
+  if (!wallet || typeof wallet === 'undefined') {
     return sendErrorMsg(res, {
       msg: "reqBody is not valid",
       error: "something wrong",
