@@ -1,15 +1,21 @@
 import { sendErrorMsg, sendSuccessMsg } from "../../commons/response";
-import { SME, Investment, User, InvestmentRelation } from "../../../models/database";
+import {
+  SME,
+  Investment,
+  User,
+  InvestmentRelation,
+} from "../../../models/database";
+import axios from "axios";
 
 const getSMElist = async (req: any, res: any) => {
   try {
     // Use Sequelize to retrieve SME data with details
     const investments = await Investment.findAll({
       attributes: [
-        "investment_target", 
-        "current_investment", 
+        "investment_target",
+        "current_investment",
         "return_expectation",
-        "investment_status"
+        "investment_status",
       ],
       where: {
         investment_status: "active", // Assuming you want only active investments
@@ -24,12 +30,10 @@ const getSMElist = async (req: any, res: any) => {
     });
 
     // Calculate the percentage
-    let smeList: any[] = []
+    let smeList: any[] = [];
     investments.forEach((investment: any) => {
-      const currentInvestment =
-      investment?.current_investment ?? 0;
-      const targetInvestment =
-      investment?.target_investment ?? 1; // Avoid division by zero
+      const currentInvestment = investment?.current_investment ?? 0;
+      const targetInvestment = investment?.investment_target ?? 1; // Avoid division by zero
       const percentage = (currentInvestment / targetInvestment) * 100;
       smeList.push({
         smes_name: investment?.SME?.username,
@@ -62,9 +66,16 @@ const getSMEDetail = async (req: any, res: any) => {
   }
   try {
     const sme = await SME.findOne({
-      attributes: ['username', 'wallet', 'photo', 'industry_type', 'created_at', 'updated_at'],
+      attributes: [
+        "username",
+        "wallet",
+        "photo",
+        "industry_type",
+        "created_at",
+        "updated_at",
+      ],
       where: { id: smeId },
-    })
+    });
     return sendSuccessMsg(res, {
       msg: "SMEs detail fetched successfully",
       data: sme,
@@ -76,7 +87,7 @@ const getSMEDetail = async (req: any, res: any) => {
       error: "something wrong",
     });
   }
-}
+};
 
 const getSMEInvestmentDetail = async (req: any, res: any) => {
   const smeId = req.params.id;
@@ -88,28 +99,35 @@ const getSMEInvestmentDetail = async (req: any, res: any) => {
   }
   try {
     const sme: any = await SME.findOne({
-      attributes: ['username', 'wallet', 'photo', 'industry_type', 'created_at', 'updated_at'],
+      attributes: [
+        "username",
+        "wallet",
+        "photo",
+        "industry_type",
+        "created_at",
+        "updated_at",
+      ],
       where: { id: smeId }, // Specify the condition to find the SME by its ID
       include: [
         {
           model: Investment,
           attributes: [
-            'current_investment', 
-            'investment_target', 
-            'investment_status',
-            'start_at',
-            'end_at'
+            "current_investment",
+            "investment_target",
+            "investment_status",
+            "start_at",
+            "end_at",
           ],
           required: false, // Left join to get all SMEs, even those with no investments
           include: [
             {
               model: InvestmentRelation,
-              attributes: ['status', 'amount'],
+              attributes: ["status", "amount"],
               required: false, // Left join to get all investments, even those with no relations
               include: [
                 {
                   model: User,
-                  attributes: ['username', 'wallet'],
+                  attributes: ["username", "wallet"],
                 },
               ],
             },
@@ -140,15 +158,15 @@ const getSMEInvestmentDetail = async (req: any, res: any) => {
 
     const smeData = {
       id: sme.id,
-        username: sme.username,
-        wallet: sme.wallet,
-        investments: investments.map((investment: any) => ({
-          id: investment.id,
-          current_investment: investment.current_investment,
-          investment_target: investment.investment_target,
-          investmentRelations: investment.InvestmentRelations || [],
-        })),
-        total_investors: totalInvestors,
+      username: sme.username,
+      wallet: sme.wallet,
+      investments: investments.map((investment: any) => ({
+        id: investment.id,
+        current_investment: investment.current_investment,
+        investment_target: investment.investment_target,
+        investmentRelations: investment.InvestmentRelations || [],
+      })),
+      total_investors: totalInvestors,
     };
 
     return sendSuccessMsg(res, {
@@ -162,6 +180,134 @@ const getSMEInvestmentDetail = async (req: any, res: any) => {
       error: "something wrong",
     });
   }
-}
+};
 
-export { getSMElist, getSMEDetail, getSMEInvestmentDetail };
+const investSMEs = async (req: any, res: any) => {
+  const reqBody = JSON.parse(JSON.stringify(req.body));
+  if (
+    !reqBody?.to ||
+    typeof reqBody?.to === "undefined" ||
+    !reqBody?.amount ||
+    typeof reqBody?.amount === "undefined"
+  ) {
+    return sendErrorMsg(res, {
+      msg: "SMEs not invested successfully",
+      error: "something wrong",
+    });
+  }
+
+  // check "to" wallet if it belongs to SMEs
+  const sme = await SME.findOne({
+    where: {
+      wallet: reqBody?.to,
+    },
+  });
+
+  if (!sme) {
+    console.error("investSMEs::smeDetail");
+    return sendErrorMsg(res, {
+      msg: "SMEs not invested successfully",
+      error: "something wrong",
+    });
+  }
+
+  // check investment exist or not
+  const investment: any = await Investment.findOne({
+    where: {
+      smes_id: sme.get()?.id,
+    },
+  });
+
+  if (!investment) {
+    console.error("investSMEs::investment");
+    return sendErrorMsg(res, {
+      msg: "SMEs not invested successfully",
+      error: "something wrong",
+    });
+  }
+
+  // processing investment
+  let invoice:any = null;
+  await axios
+    .post(
+      `${process.env.ALBY_API_URL}/invoices`,
+      {
+        amount: reqBody?.amount,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${reqBody?.to}`,
+        },
+      }
+    )
+    .then((response: any) => {
+      console.log("Response:", response?.data);
+      invoice = response.data;
+    })
+    .catch((error) => {
+      console.error("investSMEs::invoices:", error);
+      return sendErrorMsg(res, {
+        msg: "SMEs not invested successfully",
+        error: "something wrong",
+      });
+    });
+
+  // create payments
+  let paymentResult = null
+  await axios
+    .post(
+      `${process.env.ALBY_API_URL}/payments/bolt11`,
+      {
+        invoice: invoice?.payment_request,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${req?.token}`,
+        },
+      }
+    )
+    .then((response: any) => {
+      console.log("Response:", response?.data);
+      paymentResult = response.data;
+    })
+    .catch((error) => {
+      console.error("investSMEs::payments:", error);
+      return sendErrorMsg(res, {
+        msg: "SMEs not invested successfully",
+        error: "something wrong",
+      });
+    });
+
+  if (!paymentResult) {
+    console.error("investSMEs::null");
+    return sendErrorMsg(res, {
+      msg: "SMEs not invested successfully",
+      error: "something wrong",
+    });
+  }
+
+  const params = {
+    current_investment: (investment.current_investment ?? 0) + reqBody?.amount
+  }
+
+  // update investment
+  try {
+    await Investment.update(params, {
+      where: {id: investment.id}
+    })
+  } catch (error) {
+    console.error("investSMEs::update");
+    return sendErrorMsg(res, {
+      msg: "SMEs not invested successfully",
+      error: "something wrong",
+    });
+  }
+
+  console.log(`Updated investment with ID ${investment?.id}`);
+  return sendSuccessMsg(res, {
+    msg: "SMEs invested successfully",
+    data: {},
+  });
+};
+
+export { getSMElist, getSMEDetail, getSMEInvestmentDetail, investSMEs };
