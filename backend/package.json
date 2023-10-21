@@ -14,8 +14,9 @@
     "sequelize": "^6.33.0"
   },
   "scripts": {
+    "build": "npm i yarn",
     "dev": "tsnd --respawn src/index.ts",
-    "start": "npx ts-node --respawn src/index.ts",
+    "start": "yarn run dev",
     "prod": "pm2 start src/index.ts --name smes-be --watch"
   },
   "devDependencies": {
