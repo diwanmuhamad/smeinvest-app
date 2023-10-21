@@ -22,6 +22,6 @@ const User = sequelize.define("Users", {
   updated_at: {
     type: DataTypes.DATE,
   },
-});
+}, {timestamps: false});
 
 export { User };

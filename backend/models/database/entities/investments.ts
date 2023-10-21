@@ -40,6 +40,6 @@ const Investment = sequelize.define("Investments", {
   updated_at: {
     type: DataTypes.DATE,
   },
-});
+}, {timestamps: false});
 
 export { Investment };

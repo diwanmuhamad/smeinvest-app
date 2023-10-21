@@ -25,6 +25,6 @@ const SME = sequelize.define("SMEs", {
   updated_at: {
     type: DataTypes.DATE,
   },
-});
+}, {timestamps: false});
 
 export { SME };

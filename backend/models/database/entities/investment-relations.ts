@@ -22,6 +22,6 @@ const InvestmentRelation = sequelize.define("InvestmentRelations", {
   created_at: {
     type: DataTypes.DATE,
   },
-});
+}, {timestamps: false});
 
 export { InvestmentRelation };
