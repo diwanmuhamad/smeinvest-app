@@ -6,6 +6,13 @@ import {
   InvestmentRelation,
 } from "../../../models/database";
 import axios from "axios";
+const { S3, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+
+const s3 = new S3({ apiVersion: '2006-03-01', credentials: {
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+}, region: 'ap-southeast-1' });
 
 const getSMElist = async (req: any, res: any) => {
   try {
@@ -23,7 +30,7 @@ const getSMElist = async (req: any, res: any) => {
       include: [
         {
           model: SME,
-          attributes: ["id", "username", "wallet"],
+          attributes: ["id", "username", "wallet", "photo"],
           required: false, // Left join to get all SMEs, even those with no investments
         },
       ],
@@ -31,19 +38,28 @@ const getSMElist = async (req: any, res: any) => {
 
     // Calculate the percentage
     let smeList: any[] = [];
-    investments.forEach((investment: any) => {
-      const currentInvestment = investment?.current_investment ?? 0;
-      const targetInvestment = investment?.investment_target ?? 1; // Avoid division by zero
+    for (let key in investments) {
+      const investmentData: any = investments[key]
+      const currentInvestment = investmentData?.current_investment ?? 0;
+      const targetInvestment = investmentData?.investment_target ?? 1; // Avoid division by zero
       const percentage = (currentInvestment / targetInvestment) * 100;
+
+      const params = {
+        Bucket: process.env.BUCKET_URL,
+        Key: investmentData?.SME?.photo,
+      };
+      const command = new GetObjectCommand(params)
+      const signedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
       smeList.push({
-        smes_id: investment?.SME?.id,
-        smes_name: investment?.SME?.username,
-        wallet: investment?.SME?.wallet,
+        smes_id: investmentData?.SME?.id,
+        smes_name: investmentData?.SME?.username,
+        wallet: investmentData?.SME?.wallet,
         current_investment: currentInvestment,
         target_investment: targetInvestment,
+        photo: signedUrl,
         percentage,
       });
-    });
+    };
     return sendSuccessMsg(res, {
       msg: "SMEs list fetched successfully",
       data: smeList,
@@ -66,7 +82,7 @@ const getSMEDetail = async (req: any, res: any) => {
     });
   }
   try {
-    const sme = await SME.findOne({
+    const sme: any = await SME.findOne({
       attributes: [
         "username",
         "wallet",
@@ -77,6 +93,13 @@ const getSMEDetail = async (req: any, res: any) => {
       ],
       where: { id: smeId },
     });
+    const params = {
+      Bucket: process.env.BUCKET_URL,
+      Key: sme.photo,
+    };
+    const command = new GetObjectCommand(params)
+    const signedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
+    sme['photo'] = signedUrl
     return sendSuccessMsg(res, {
       msg: "SMEs detail fetched successfully",
       data: sme,
