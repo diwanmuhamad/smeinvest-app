@@ -23,7 +23,7 @@ const getSMElist = async (req: any, res: any) => {
       include: [
         {
           model: SME,
-          attributes: ["username", "wallet"],
+          attributes: ["id", "username", "wallet"],
           required: false, // Left join to get all SMEs, even those with no investments
         },
       ],
@@ -36,6 +36,7 @@ const getSMElist = async (req: any, res: any) => {
       const targetInvestment = investment?.investment_target ?? 1; // Avoid division by zero
       const percentage = (currentInvestment / targetInvestment) * 100;
       smeList.push({
+        smes_id: investment?.SME?.id,
         smes_name: investment?.SME?.username,
         wallet: investment?.SME?.wallet,
         current_investment: currentInvestment,
@@ -196,8 +197,23 @@ const investSMEs = async (req: any, res: any) => {
     });
   }
 
+  // get user
+  const user: any = await User.findOne({
+    where: {
+      wallet: req?.user?.lightning_address,
+    },
+  });
+
+  if (!user) {
+    console.error("investSMEs::user");
+    return sendErrorMsg(res, {
+      msg: "SMEs not invested successfully",
+      error: "something wrong",
+    });
+  }
+
   // check "to" wallet if it belongs to SMEs
-  const sme = await SME.findOne({
+  const sme: any = await SME.findOne({
     where: {
       wallet: reqBody?.to,
     },
@@ -295,6 +311,18 @@ const investSMEs = async (req: any, res: any) => {
     await Investment.update(params, {
       where: {id: investment.id}
     })
+    // create investment relation
+    const creationParamsInvestment = {
+      user_id: user.get()?.id,
+      smes_id: sme?.id,
+      investment_id: investment.id,
+      amount: reqBody?.amount,
+      status: 'completed',
+      created_at: new Date()
+    }
+
+    const invtRelation: any = await InvestmentRelation.create(creationParamsInvestment)
+    console.log('invtRelation created: ', invtRelation?.id)
   } catch (error) {
     console.error("investSMEs::update");
     return sendErrorMsg(res, {
