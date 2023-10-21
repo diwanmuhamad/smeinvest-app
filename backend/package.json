@@ -15,7 +15,7 @@
   },
   "scripts": {
     "build": "npm i yarn && yarn install",
-    "start": "ts-node index.ts",
+    "start": "yarn ts-node index.ts",
     "dev": "tsnd --respawn src/index.ts",
     "prod": "pm2 start src/index.ts --name smes-be --watch"
   },
