@@ -15,7 +15,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "node src/index.js",
+    "start": "node index.js",
     "dev": "tsnd --respawn src/index.ts",
     "prod": "pm2 start src/index.ts --name smes-be --watch"
   },
